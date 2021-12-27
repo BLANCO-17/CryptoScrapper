@@ -6,18 +6,35 @@
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+
+#PATH TO YOUR WEBDRIVER
+_PATH = "C:\Program Files (x86)\ChromeDriver\chromedriver.exe"
 
 class priceExtractor:
     
-    def __init__(self):    
-
-        self.option = webdriver.ChromeOptions()        
+    def __init__(self):
+        
+        global _PATH  
+        
+        self.option = webdriver.ChromeOptions()
+        self.option.add_argument("disable-gpu")
         self.option.add_argument('--headless')
         self.option.add_argument('--no-sandbox')
         self.option.add_argument('--disable-dev-sh-usage') 
         self.option.add_experimental_option('excludeSwitches', ['enable-logging']) #comment this code if you want the webdriver logs in console
+
+        path=Service(_PATH)
+        self.driver = webdriver.Chrome(service=path, options=self.option)
         
-        self.driver = webdriver.Chrome(r"PATH TO YOUR WEBDRIVER.EXE", options=self.option) #UPDATE WEBDRIVER.EXE PATH
+        #* DEPRECATED CODE *#
+        # self.option = webdriver.ChromeOptions()        
+        # self.option.add_argument('--headless')
+        # self.option.add_argument('--no-sandbox')
+        # self.option.add_argument('--disable-dev-sh-usage') 
+        # self.option.add_experimental_option('excludeSwitches', ['enable-logging']) #comment this code if you want the webdriver logs in console
+        
+        # self.driver = webdriver.Chrome(r"PATH TO YOUR WEBDRIVER.EXE", options=self.option) #UPDATE WEBDRIVER.EXE PATH
             
     def getName(self, abv):
         
@@ -92,7 +109,7 @@ class priceExtractor:
     
     
 pe = priceExtractor()
-print(pe.getPrice('gala')) 
+print(pe.getPrice('btc')) 
 
 #USAGE
 # pe = priceExtractor()
