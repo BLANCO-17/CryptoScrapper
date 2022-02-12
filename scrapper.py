@@ -7,15 +7,16 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+import chromedriver_autoinstaller
 
-#PATH TO YOUR WEBDRIVER
-_PATH = "C:\Program Files (x86)\ChromeDriver\chromedriver.exe"
+#PATH TO YOUR WEBDRIVER VERSION
+# _PATH = "C:\Program Files (x86)\ChromeDriver\chromedriver.exe"
 
 class priceExtractor:
     
     def __init__(self):
         
-        global _PATH  
+        # global _PATH
         
         self.option = webdriver.ChromeOptions()
         self.option.add_argument("disable-gpu")
@@ -24,18 +25,11 @@ class priceExtractor:
         self.option.add_argument('--disable-dev-sh-usage') 
         self.option.add_experimental_option('excludeSwitches', ['enable-logging']) #comment this code if you want the webdriver logs in console
 
-        path=Service(_PATH)
-        self.driver = webdriver.Chrome(service=path, options=self.option)
-        
-        #* DEPRECATED CODE *#
-        # self.option = webdriver.ChromeOptions()        
-        # self.option.add_argument('--headless')
-        # self.option.add_argument('--no-sandbox')
-        # self.option.add_argument('--disable-dev-sh-usage') 
-        # self.option.add_experimental_option('excludeSwitches', ['enable-logging']) #comment this code if you want the webdriver logs in console
-        
-        # self.driver = webdriver.Chrome(r"PATH TO YOUR WEBDRIVER.EXE", options=self.option) #UPDATE WEBDRIVER.EXE PATH
-            
+        chromedriver_autoinstaller.install()
+
+        # path=Service(_PATH) # optional
+        self.driver = webdriver.Chrome(options=self.option)
+                  
     def getName(self, abv):
         
         # NAME VALUE pairs based on coinmarketcap item's url
@@ -107,7 +101,7 @@ class priceExtractor:
         except:
             pass
     
-    
+
 pe = priceExtractor()
 print(pe.getPrice('btc')) 
 
@@ -116,4 +110,4 @@ print(pe.getPrice('btc'))
 # print(pe.getPrice('ckb')) 
 
 #------------------
-# pe.closeDriver() # -> important to call whenever closing application / script.
+pe.closeDriver() # -> important to call whenever closing application / script.
